@@ -1,0 +1,118 @@
+import java.sql.SQLOutput;
+import java.util.*;
+
+public class portfolio2 {
+
+    static Stack<String> lostItems = new Stack<>();
+    static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        System.out.println("\n");
+        System.out.println("|-------------------------------------------------|");
+        System.out.println("|----* WELCOME TO LOSTANDFOUND REPORT SYSTEM *----|");
+        System.out.println("|-------------------------------------------------|\n");
+        System.out.println("Enter your name:  ");
+        String name = scanner.nextLine();
+
+        System.out.println("Hi, "+ name + " Please REPORT 2-3 items first for better results :)");
+
+        while (true) {
+            System.out.println("\n=== Lost and Found Menu ===");
+            System.out.println("a. Report a lost item");
+            System.out.println("b. View all lost items");
+            System.out.println("c. Search for an item");
+            System.out.println("d. Mark item as found");
+            System.out.println("e. Exit");
+            System.out.print("Choose an option: ");
+
+            String choice = scanner.nextLine().toLowerCase();
+
+            switch (choice) {
+                case "a":
+                    reportLostItem();
+                    break;
+                case "b":
+                    viewLostItems();
+                    break;
+                case "c":
+                    searchItem();
+                    break;
+                case "d":
+                    markItemFound();
+                    break;
+                case "e":
+                    System.out.println("Exiting... Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid option. Try again.");
+            }
+        }
+    }
+
+    public static void reportLostItem() {
+        System.out.print("Enter name of lost item: ");
+        String item = scanner.nextLine();
+
+        System.out.print("Enter colour of " + item + ": ");
+        String colour = scanner.nextLine();
+
+        System.out.print("From where you lost the " + item + ": ");
+        String location = scanner.nextLine();
+
+        String fullItem = item + " (Colour: " + colour + ", Location: " + location + ")";
+        lostItems.push(fullItem);
+
+        System.out.println("Item reported successfully.");
+    }
+
+    public static void viewLostItems() {
+        if (lostItems.isEmpty()) {
+            System.out.println("No lost items reported yet.");
+        } else {
+            System.out.println("\n--- Lost Items ---");
+            int count = 1;
+            for (int i = lostItems.size() - 1; i >= 0; i--) {
+                System.out.println(count + ". " + lostItems.get(i));
+                count++;
+            }
+        }
+    }
+
+    public static void searchItem() {
+        System.out.print("Enter keyword to search: ");
+        String keyword = scanner.nextLine().toLowerCase();
+
+        boolean found = false;
+        for (String item : lostItems) {
+            if (item.toLowerCase().contains(keyword)) {
+                System.out.println("Match found: " + item);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No items matched your search.");
+        }
+    }
+
+    public static void markItemFound() {
+        System.out.print("Enter exact name of item to remove: ");
+        String toRemove = scanner.nextLine();
+
+        boolean removed = false;
+        for (int i = 0; i < lostItems.size(); i++) {
+            if (lostItems.get(i).toLowerCase().contains(toRemove.toLowerCase())) {
+                lostItems.remove(i);
+                System.out.println("Item marked as found and removed.");
+                removed = true;
+                break;
+            }
+        }
+
+        if (!removed) {
+            System.out.println("Item not found in the list.");
+        }
+    }
+}
+
+
